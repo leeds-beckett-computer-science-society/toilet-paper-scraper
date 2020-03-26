@@ -16,6 +16,9 @@
 
 import sys
 import scrapy
+import json
+import datetime
+import time
 from scrapy.crawler import CrawlerProcess
 from twilio.rest import Client
 
@@ -46,30 +49,46 @@ class AlertModel:
     # function to alert user when available toilet paper is found    
     def alert_me():
         account_sid = 'enter_sid'
-        auth_token = 'enter auth_token'
+        auth_token = 'enter_token'
         client = Client(account_sid, auth_token)
 
-        numbers = ['enter_phonenumber', 'enter_phonenumber']
+        # need to put these details into 'secrets'
+        numbers = ['enter_numbers']
 
         for phoneNo in numbers:
-        
             message = client.messages \
             .create(
                 body="Quick, toilet paper found at: TESTESTEST ",
                 from_='+19032252880',
                 to= phoneNo
             )
-        
 
         print(message.sid)
+
+    
+    # track when and where toilet paper was found in json
+    def toilet_paper_tracker():
+        placeholder = 'placeholder'
+
+        data = {'timestamp': str(datetime.datetime.now()),
+                'url': placeholder,
+                'price': placeholder,       
+        }
+
+        with open('mood.json', 'a') as outfile:
+            json.dump(data, outfile, indent=4)
+            outfile.write(",")
+
+            print("object " + str(i) + " created")
+            
 
     def tor():
         print('todo')
 
 
 #test_version_and_path()
-AlertModel.alert_me()
+# AlertModel.alert_me()
 
-#process = CrawlerProcess()
-#process.crawl(PaperSpider)
-#process.start()
+# process = CrawlerProcess()
+# process.crawl(PaperSpider)
+# process.start()
