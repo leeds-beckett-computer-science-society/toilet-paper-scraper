@@ -1,17 +1,10 @@
 # ------------------------------------------------------------------------------------------
 # (C) 2020 Leeds Beckett Computer Science Society
-# Authors:
-# Bence Gadanyi
-# Lucy McCall
-# Samuel Lightowler
-#
+# Authors: Bence Gadanyi, Lucy McCall, Samuel Lightowler, Tom
 # server link: https://discord.gg/RDmKHe
 #
 # Descr: Web spider to search and alert available TP
-#
-#
 # git: https://github.com/leeds-beckett-computer-science-society/toilet-paper-scraper.git
-#
 # ------------------------------------------------------------------------------------------
 
 # shopping url:
@@ -24,6 +17,7 @@
 import sys
 import scrapy
 from scrapy.crawler import CrawlerProcess
+from twilio.rest import Client
 
 
 def test_version_and_path():
@@ -38,25 +32,34 @@ class PaperSpider(scrapy.Spider):
 
     def parse(self, response):
         for product in response.xpath("//div[@class='product-list--list-item']"):
-            yield {
-                'product_name': product.xpath(".//h3[@class='sc-kAzzGY iTLNpo']").extract_first(),
-                'product_price': product.xpath(".//span[@class='value']").extract_first()
-            }
+            product_name = product.xpath(".//h3[@class='sc-kAzzGY iTLNpo']").extract_first()
+            product_price = product.xpath(".//span[@class='value']").extract_first()
+            print(product_name)
+            print(product_price)
+            # yield {
+            #     'product_name': product_name,
+            #     'product_price': product_price
+            # }
 
 
 class AlertModel:
     # function to alert user when available toilet paper is found    
     def alert_me():
-        account_sid = 'ACec8291bcf1440c2af4ea082bb02bc345'
-        auth_token = '8c753f55a73d965dd44e5d3446f732e4'
+        account_sid = 'enter_sid'
+        auth_token = 'enter auth_token'
         client = Client(account_sid, auth_token)
 
-        message = client.messages \
-        .create(
-            body="Quick, toilet paper found at: ",
-            from_='+19032252880',
-            to='447864844377, 447447410553'
-        )
+        numbers = ['enter_phonenumber', 'enter_phonenumber']
+
+        for phoneNo in numbers:
+        
+            message = client.messages \
+            .create(
+                body="Quick, toilet paper found at: TESTESTEST ",
+                from_='+19032252880',
+                to= phoneNo
+            )
+        
 
         print(message.sid)
 
@@ -64,9 +67,9 @@ class AlertModel:
         print('todo')
 
 
-test_version_and_path()
-# AlertModel.alert_me()
+#test_version_and_path()
+AlertModel.alert_me()
 
-process = CrawlerProcess()
-process.crawl(PaperSpider)
-process.start()
+#process = CrawlerProcess()
+#process.crawl(PaperSpider)
+#process.start()
