@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "c:\\Users\\Admin\\Desktop\\scrapy\\venv\\Scripts\\python.exe",
+    "python.pythonPath": "venv\\Scripts\\python.exe",
     "code-runner.exectutorMap": {
         "python": "$pythonPath -u $fullFileName"
     },
